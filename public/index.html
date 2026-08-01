@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content" />
+  <title>cathedral — a place to talk</title>
+
+  <!-- Preconnect to Cloudflare R2 CDN for instant music loading -->
+  <link rel="dns-prefetch" href="https://pub-c6464a04912c472a944277226c1866b9.r2.dev" />
+  <link rel="preconnect" href="https://pub-c6464a04912c472a944277226c1866b9.r2.dev" crossorigin />
+
+  <!-- Open Graph / Twitter Card embed -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="cathedral" />
+  <meta property="og:description" content="a place to talk, online 24/7" />
+  <meta property="og:image" content="/preview2.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="cathedral" />
+  <meta name="twitter:description" content="a place to talk, online 24/7" />
+  <meta name="twitter:image" content="/preview2.png" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/css/themes.css?v=11" />
+  <link rel="stylesheet" href="/css/style.css?v=10" />
+  <link rel="stylesheet" href="/css/music.css?v=1" />
+
+</head>
+
+<body class="theme-vista-grey no-radius">
+
+  <div id="dm-ctx-menu"></div>
+
+  <div id="join-screen">
+    <h1>welcome</h1>
+    <div id="join-card">
+      <div id="join-controls" style="display:none">
+        <div class="join-ctrl-group">
+          <label>theme</label>
+          <select id="join-theme-select"></select>
+        </div>
+        <div class="join-ctrl-group">
+          <label>rounded</label>
+          <select id="join-rounded-select">
+            <option value="yes">yes</option>
+            <option value="no" selected>no</option>
+          </select>
+        </div>
+      </div>
+      <input type="text" id="username-input" placeholder="enter username" maxlength="24" autocomplete="off" />
+      <div id="color-picker-row" style="display:none">
+        <label>your color</label>
+        <div id="color-swatches"></div>
+      </div>
+      <div id="avatar-upload-row">
+        <div id="avatar-preview" title="click to set your avatar">
+          <svg id="avatar-placeholder-icon" xmlns="http://www.w3.org/2000/svg" width="28" height="28"
+            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <circle cx="12" cy="8" r="4" />
+            <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+          </svg>
+          <span id="avatar-hint">tap to upload</span>
+        </div>
+        <input type="file" id="avatar-file-input" accept="image/*" style="display:none" />
+      </div>
+      <button id="join-btn">join</button>
+      <div id="join-error"></div>
+    </div>
+  </div>
+
+  <div id="kicked-screen">
+    <h2>you were kicked</h2>
+    <p id="kicked-msg">you have been removed by the admin.</p>
+    <p id="kicked-timer"></p>
+  </div>
+
+  <div id="chat-screen">
+    <div id="sidebar-backdrop"></div>
+    <div id="chat-screen-inner">
+      <div id="sidebar">
+        <div id="sidebar-header">
+          <h1>chat</h1>
+          <div id="online-badge"><span id="online-text">0 online</span></div>
+          <div id="my-status-row" title="Set your status">
+            <span id="my-status-text">set a status…</span>
+          </div>
+        </div>
+        <div id="user-list-wrap">
+          <div id="user-list-label">members</div>
+          <div class="admin-self-label">you are admin</div>
+          <div id="user-list"></div>
+        </div>
+        <div id="sidebar-settings">
+          <button id="sidebar-rain-btn">rain</button>
+          <div class="sidebar-settings-row">
+            <span class="sidebar-settings-label">theme</span>
+            <select class="sidebar-settings-select" id="sidebar-theme-select"></select>
+          </div>
+          <div class="sidebar-settings-row">
+            <span class="sidebar-settings-label">corners</span>
+            <select class="sidebar-settings-select" id="sidebar-rounded-select">
+              <option value="no">sharp</option>
+              <option value="yes">round</option>
+            </select>
+          </div>
+          <div class="sidebar-settings-row">
+            <span class="sidebar-settings-label">layout</span>
+            <select class="sidebar-settings-select" id="sidebar-layout-select">
+              <option value="bubble">bubble</option>
+              <option value="cozy">cozy</option>
+              <option value="compact">compact</option>
+            </select>
+          </div>
+        </div>
+        <div id="admin-panel">
+          <div id="admin-panel-row">
+            <input type="password" id="admin-input" placeholder="admin password" autocomplete="off" />
+            <button id="admin-btn">OK</button>
+          </div>
+          <div id="admin-status"></div>
+        </div>
+      </div>
+
+      <div id="main">
+        <div id="topbar">
+          <button id="hamburger-btn" title="Menu">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <path d="M2 4.5h14M2 9h14M2 13.5h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            </svg>
+          </button>
+          <div id="topbar-title"># general</div>
+          <span id="admin-badge">admin</span>
+          <div id="topbar-count"></div>
+          <button id="dm-tray-btn" title="Open DM" style="display:none"></button>
+          <div id="topbar-controls">
+            <button id="tax-toggle-btn" class="tb-toggle-btn" title="Glossary [ G ]"
+              style="border:var(--border-main);border-radius:var(--radius-btn);box-shadow:var(--shadow-btn);">glossary</button>
+            <div id="size-toggle">
+              <button class="sz-btn" data-size="1" title="Full size">1</button>
+              <button class="sz-btn" data-size="2" title="Medium">2</button>
+              <button class="sz-btn" data-size="3" title="Compact">3</button>
+            </div>
+            <button id="rain-btn" class="tb-toggle-btn"
+              style="border:var(--border-main);border-radius:var(--radius-btn);box-shadow:var(--shadow-btn);">rain</button>
+            <div class="tb-toggle" id="rounded-toggle">
+              <button class="tb-toggle-btn" data-val="no">sharp</button>
+              <button class="tb-toggle-btn" data-val="yes">round</button>
+            </div>
+            <div class="tb-theme-wrap">
+              <button class="tb-theme-btn" id="theme-btn" title="cycle theme [ T ] · scroll to browse">
+                <span id="theme-btn-label">luna</span>
+                <span class="tb-theme-arrow">&#9662;</span>
+              </button>
+              <div class="tb-dropdown" id="theme-dropdown"></div>
+            </div>
+          </div>
+        </div>
+        <div id="reconnect-banner">connection lost — reconnecting…</div>
+        <div id="messages">
+          <div id="empty-state">
+            no messages yet.<br>be the first to say something.
+          </div>
+        </div>
+        <div id="lightbox">
+          <button id="lightbox-close" title="Close" aria-label="Close image">✕</button>
+          <img id="lightbox-img" />
+        </div>
+        <div id="bottom-chrome">
+          <div id="paste-preview">
+            <img id="paste-thumb" />
+            <div id="paste-info"></div>
+            <button id="paste-cancel" title="Cancel">✕</button>
+          </div>
+          <div id="status-row">
+            <div id="typing-bar"></div>
+          </div>
+          <div id="edit-banner">
+            <span id="edit-banner-label">✏ editing message</span>
+            <button id="edit-cancel-btn" title="Cancel edit">✕</button>
+          </div>
+          <div id="reply-banner">
+            <span id="reply-banner-label">↩ <em id="reply-banner-user"></em><span id="reply-banner-text"></span></span>
+            <button id="reply-cancel-btn" title="Cancel reply">✕</button>
+          </div>
+          <div id="input-bar">
+            <input type="file" id="img-attach-input" accept="image/*" />
+            <button id="img-attach-btn" title="Attach image">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <rect x="2" y="4" width="16" height="12" rx="2" stroke="currentColor" stroke-width="1.8" />
+                <circle cx="7" cy="8.5" r="1.5" fill="currentColor" />
+                <path d="M2 13l4.5-4 3.5 3.5 2.5-2.5L18 14" stroke="currentColor" stroke-width="1.8"
+                  stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </button>
+            <textarea id="msg-input" placeholder="message…" maxlength="1000" rows="1" autocomplete="off"
+              disabled></textarea>
+            <div id="rec-inline">
+              <span id="rec-dot"></span>
+              <span id="rec-timer">0:00</span>
+              <span id="rec-hint">recording…</span>
+            </div>
+            <div id="input-right">
+              <span id="char-counter"></span>
+              <button id="mic-btn" title="Record voice message">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                  <rect x="9" y="2" width="6" height="13" rx="3" stroke="currentColor" stroke-width="2" />
+                  <path d="M5 10a7 7 0 0 0 14 0" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                  <line x1="12" y1="19" x2="12" y2="22" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                  <line x1="9" y1="22" x2="15" y2="22" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                </svg>
+              </button>
+              <button id="send-btn" disabled title="Send">
+                <svg width="20" height="20" viewBox="0 0 18 18" fill="none">
+                  <path d="M9 14V4M9 4L4.5 8.5M9 4L13.5 8.5" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Taxonomy / Glossary panel ─────────────────────────────────── -->
+    <div id="taxonomy-panel">
+      <div id="tax-header">
+        <div id="tax-title">
+          <span id="tax-title-text">glossary</span>
+          <span id="tax-count"></span>
+        </div>
+        <button id="tax-close-btn" title="Close glossary">✕</button>
+      </div>
+      <div id="tax-search-wrap">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          style="opacity:.4;flex-shrink:0">
+          <circle cx="11" cy="11" r="8" />
+          <line x1="21" y1="21" x2="16.65" y2="16.65" />
+        </svg>
+        <input id="tax-search" type="text" placeholder="search…" autocomplete="off" />
+      </div>
+      <div id="tax-list"></div>
+      <div id="tax-detail"></div>
+    </div>
+  </div>
+
+  <!-- Status picker modal -->
+  <div id="status-picker">
+    <div id="status-picker-backdrop"></div>
+    <div id="status-picker-panel">
+      <div id="status-picker-header">
+        <span id="status-picker-title">set your status</span>
+        <button id="status-picker-close" title="Close">✕</button>
+      </div>
+      <div id="status-presets">
+        <div class="status-preset" data-text="sleeping"><span class="status-preset-label">sleeping</span></div>
+        <div class="status-preset" data-text="coding"><span class="status-preset-label">coding</span></div>
+        <div class="status-preset" data-text="gaming"><span class="status-preset-label">gaming</span></div>
+        <div class="status-preset" data-text="listening"><span class="status-preset-label">listening</span></div>
+        <div class="status-preset" data-text="eating"><span class="status-preset-label">eating</span></div>
+        <div class="status-preset" data-text="reading"><span class="status-preset-label">reading</span></div>
+        <div class="status-preset" data-text="busy"><span class="status-preset-label">busy</span></div>
+        <div class="status-preset" data-text="ghosting"><span class="status-preset-label">ghosting</span></div>
+      </div>
+      <div id="status-custom-row">
+        <input id="status-custom-input" type="text" placeholder="custom status…" maxlength="60" autocomplete="off" />
+        <button id="status-save-btn">set</button>
+      </div>
+      <button id="status-clear-btn">clear status</button>
+    </div>
+  </div>
+
+  <!-- Mobile user action sheet -->
+  <div id="mobile-action-sheet">
+    <div id="mobile-action-sheet-backdrop"></div>
+    <div id="mobile-action-sheet-panel">
+      <div id="mobile-action-sheet-title">options</div>
+      <button class="mobile-action-btn" id="mobile-action-dm">open dm</button>
+      <button class="mobile-action-btn" id="mobile-action-set-status">set status</button>
+      <button class="mobile-action-btn cancel-btn" id="mobile-action-cancel">cancel</button>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <div id="layout-switcher">
+    <button class="tb-toggle-btn" data-val="bubble">bubble</button>
+    <button class="tb-toggle-btn" data-val="cozy">cozy</button>
+    <button class="tb-toggle-btn" data-val="compact">compact</button>
+  </div>
+  <script src="/js/taxonomy.js?v=2"></script>
+  <script src="/js/ui.js?v=12"></script>
+  <script src="/js/audio.js?v=10"></script>
+  <script src="/js/e2e.js?v=10"></script>
+  <script src="/js/dm.js?v=10"></script>
+  <script src="/js/rain.js?v=10"></script>
+  <script src="/js/listentogether.js?v=1"></script>
+  <script src="/js/tooltip.js?v=1"></script>
+  <script src="/js/main.js?v=11"></script>
+  <script src="/js/audio-recorder.js?v=10"></script>
+  <script src="/js/ambient.js?v=10"></script>
+  <script src="/js/funziez.js?v=1"></script>
+  <script src="/js/mobile-plugins.js?v=1"></script>
+  <script src="/js/music.js?v=1"></script>
+  <script src="/js/reactivity.js?v=1"></script>
+
+
+
+  <script src="/js/cards.js?v=1"></script>
+  <script src="/js/taxonomy-panel.js?v=3"></script>
+  <script src="/js/colorpicker.js?v=1"></script>
+
+
+
+</body>
+
+</html>
