@@ -1,0 +1,42 @@
+﻿[UpArrow]
+Path=Alternate.ani
+
+[Wait]
+Path=Busy.ani
+
+[SizeNESW]
+Path=Diagonal NE.ani
+
+[SizeNWSE]
+Path=Diagonal NW.ani
+
+[Help]
+Path=Help.ani
+
+[SizeWE]
+Path=Horizontal WE 2.ani
+
+[Hand]
+Path=Link.ani
+
+[SizeAll]
+Path=Move.ani
+
+[Arrow]
+Path=Normal.ani
+
+[Crosshair]
+Path=Precision.ani
+
+[IBeam]
+Path=Text.ani
+
+[No]
+Path=Unavailable.ani
+
+[SizeNS]
+Path=Vertical NS.ani
+
+[AppStarting]
+Path=Working.ani
+
