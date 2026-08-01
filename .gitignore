@@ -1,0 +1,9 @@
+node_modules/
+.wrangler/
+package-lock.json
+.last-upload.json
+music-manager.js
+.folder-picker.ps1
+test-pick.ps1
+.antigravity/
+*.log
