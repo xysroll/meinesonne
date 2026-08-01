@@ -1,0 +1,1733 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+/* ══════════════════════════════════════════════════════════════════════════
+   HOW THEMES WORK — READ THIS BEFORE ADDING A THEME
+   ══════════════════════════════════════════════════════════════════════════
+
+   This file is the ONLY file you need to edit to add a new theme.
+   ui.js automatically scans this stylesheet at runtime, detects every
+   body.theme-* block that contains --theme-label, and populates all
+   dropdowns and selectors in the UI from that list. No JS or HTML changes
+   are ever needed.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* Default: Vista Professional Grey (Skeuomorphic Dark-Grey) */
+  --bg-body: #1a1a1c;
+  --bg-panel: linear-gradient(180deg, #38383a 0%, #242426 100%);
+  --bg-sidebar: linear-gradient(180deg, #2d2d2f 0%, #1e1e20 100%);
+  --bg-header: linear-gradient(180deg, #4a4a4c 0%, #2e2e30 100%);
+  --bg-bottom: linear-gradient(180deg, #333335 0%, #222224 100%);
+  --bg-input: #0e0e10;
+  --bg-btn: linear-gradient(180deg, #6b6b6d 0%, #454547 100%);
+  --bg-btn-hover: linear-gradient(180deg, #7c7c7e 0%, #555557 100%);
+  --bg-msg: linear-gradient(180deg, #424244 0%, #303032 100%);
+  --bg-msg-own: linear-gradient(180deg, #2b4c6b 0%, #1a334d 100%);
+
+  --text-main: #f0f0f0;
+  --text-dim: #a0a0a5;
+  --text-btn: #ffffff;
+
+  --border-main: 1px solid #111;
+  --border-light: 1px solid rgba(255, 255, 255, 0.1);
+
+  --shadow-panel: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 12px 32px rgba(0, 0, 0, 0.8);
+  --shadow-input: inset 0 2px 6px rgba(0, 0, 0, 0.8), 0 1px 0 rgba(255, 255, 255, 0.1);
+  --shadow-btn: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 2px 4px rgba(0, 0, 0, 0.6);
+  --shadow-msg: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 2px 5px rgba(0, 0, 0, 0.5);
+
+  --shadow-focus: 0 0 0 2px rgba(92, 230, 92, 0.4);
+  /* Anillo de foco accesible */
+
+  --radius-panel: 12px;
+  --radius-btn: 8px;
+  --radius-input: 6px;
+  --radius-msg: 10px;
+
+  --font-main: 'Segoe UI', 'Trebuchet MS', sans-serif;
+  --led-glow: #5ce65c;
+  --rain-r: 174;
+  --rain-g: 212;
+  --rain-b: 248;
+}
+
+/* ── GLOBAL ENHANCEMENTS (Mejoras añadidas) ──────────────────────────── */
+button,
+input,
+.msg,
+.panel {
+  transition: background 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, transform 0.05s ease;
+}
+
+input:focus,
+textarea:focus {
+  outline: none;
+  box-shadow: var(--shadow-input), var(--shadow-focus) !important;
+}
+
+/* Custom Scrollbars inmersivos basados en el tema */
+::-webkit-scrollbar {
+  width: 14px;
+  background: var(--bg-body);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--bg-btn);
+  border: var(--border-main);
+  border-radius: var(--radius-btn);
+  box-shadow: var(--shadow-btn);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--bg-btn-hover);
+}
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+ THEME: VISTA
+ Windows Vista / Frutiger Aero. Glass, sky, nature, translucency.
+ The specific aesthetic of 2006–2009 Microsoft design language:
+ frosted glass panels, clean sky-blue gradients, soft white light,
+ the sense of looking through clean glass at something luminous.
+
+ Resources:
+ · css.glass — glassmorphism panel CSS
+ · svgbackgrounds.com — organic light bg shapes
+ · haikei.app — wave/blob SVG for body background
+ · guidebookgallery.org/screenshots/winvista — exact Vista UI colors
+ · betawiki.net/wiki/Windows_Vista — build-accurate color reference
+ · aesthetics.fandom.com/wiki/Frutiger_Aero — palette reference
+ · fonts.google.com/specimen/Nunito — soft, rounded, Frutiger-adjacent
+ · fonts.google.com/specimen/Segoe+UI — the actual Vista system font
+ · Vista Aero glass values: #ffffff at 0.6 opacity + backdrop blur
+ · Vista blue: #0078d4 / Aero window border: rgba(100,180,255,0.6)
+ · Bliss-inspired body: sky gradient + soft cloud/light radials
+ ══════════════════════════════════════════════════════════════════════════ */
+
+
+body.theme-amoled-skeuo {
+  --theme-label: 'skeuomorph';
+
+  --noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='256' height='256' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+
+  --bg-body: var(--noise), radial-gradient(circle at 50% 0%, #1c1c1e 0%, #0a0a0b 100%);
+  --bg-panel: linear-gradient(160deg, #252527 0%, #1a1a1c 100%);
+  --bg-sidebar: linear-gradient(180deg, #202022 0%, #141416 100%);
+  --bg-header: linear-gradient(180deg, #2e2e30 0%, #232325 100%);
+  --bg-bottom: linear-gradient(180deg, #1e1e20 0%, #141416 100%);
+  --bg-input: #0a0a0b;
+  --bg-btn: linear-gradient(180deg, #2e2e30 0%, #1e1e20 100%);
+  --bg-btn-hover: linear-gradient(180deg, #363638 0%, #262628 100%);
+  --bg-msg: #1e1e20;
+  --bg-msg-own: #252528;
+
+  --text-main: #d0d4da;
+  --text-dim: #606468;
+  --text-btn: #a8adb5;
+
+  --border-main: 1px solid #0a0a0b;
+  --border-light: 1px solid rgba(255, 255, 255, 0.07);
+  --border2: #0a0a0b;
+
+  --shadow-panel: 0 20px 40px rgba(0, 0, 0, 0.8),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.5);
+  --shadow-input: inset 0 3px 8px rgba(0, 0, 0, 0.9),
+    inset 0 1px 3px rgba(0, 0, 0, 0.8),
+    0 1px 0 rgba(255, 255, 255, 0.05);
+  --shadow-btn: 0 2px 4px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.6);
+  --shadow-msg: 0 2px 5px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  --shadow-focus: 0 0 0 2px rgba(216, 220, 226, 0.35);
+
+  --radius-panel: 8px;
+  --radius-btn: 4px;
+  --radius-input: 4px;
+  --radius-msg: 6px;
+
+  --font-main: 'SF Pro Display', 'Helvetica Neue', sans-serif;
+  --led-glow: #d8dce2;
+  --rain-r: 80;
+  --rain-g: 82;
+  --rain-b: 88;
+
+  --color-bubble-bg: var(--bg-panel);
+  --color-text: var(--text-main);
+
+  --fallacy-bg: rgba(220, 80, 80, 0.1);
+  --fallacy-txt: #d46060;
+  --fallacy-bdr: rgba(220, 80, 80, 0.22);
+  --bias-bg: rgba(180, 180, 200, 0.08);
+  --bias-txt: #9098a8;
+  --bias-bdr: rgba(180, 180, 200, 0.18);
+  --assumption-bg: rgba(200, 180, 100, 0.08);
+  --assumption-txt: #b8a060;
+  --assumption-bdr: rgba(200, 180, 100, 0.2);
+}
+
+body.theme-amoled-skeuo #topbar-title {
+  color: #d0d4da;
+  text-shadow: 0 -1px 0 #000, 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+body.theme-amoled-skeuo #topbar-count {
+  color: #606468;
+}
+
+body.theme-amoled-skeuo #sidebar-header h1,
+body.theme-amoled-skeuo #sidebar-header * {
+  color: #d0d4da;
+}
+
+body.theme-amoled-skeuo #tax-header {
+  background: #141416;
+  border-bottom: var(--border-main);
+  box-shadow: none;
+}
+
+body.theme-amoled-skeuo #tax-title-text,
+body.theme-amoled-skeuo #tax-count,
+body.theme-amoled-skeuo #tax-close-btn {
+  color: #d0d4da;
+  text-shadow: none;
+}
+
+body.theme-amoled-skeuo #messages {
+  background: #0a0a0b;
+}
+
+body.theme-amoled-skeuo input:focus,
+body.theme-amoled-skeuo textarea:focus {
+  box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.9), 0 0 0 2px rgba(216, 220, 226, 0.3) !important;
+}
+
+body.theme-amoled-skeuo .mp-tl-row.mp-tl-active .mp-tl-num,
+body.theme-amoled-skeuo .mp-tl-row.mp-tl-active .mp-tl-name,
+body.theme-amoled-skeuo .mp-ap-item.mp-ap-active {
+  text-shadow: none;
+  color: #d8dce2;
+}
+
+body.theme-amoled-skeuo .mp-bar {
+  background: #0a0a0b;
+}
+
+body.theme-amoled-skeuo .mp-vol {
+  accent-color: #d8dce2;
+}
+
+body.theme-amoled-skeuo .tb-active,
+body.theme-amoled-skeuo .tax-btn-active {
+  background: #0a0a0b !important;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.9), 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+  color: #d8dce2 !important;
+  border-color: #000 !important;
+}
+
+body.theme-amoled-skeuo #rain-btn.rain-on {
+  background: #0a0a0b !important;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.9) !important;
+  color: #d8dce2 !important;
+}
+
+body.theme-amoled-skeuo #size-toggle .sz-btn.sz-active {
+  background: #0a0a0b !important;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.9) !important;
+  color: #d8dce2 !important;
+}
+
+body.theme-amoled-skeuo .tb-dd-item.tb-cur {
+  color: #d8dce2;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+body.theme-amoled-skeuo button:active {
+  transform: translateY(1px);
+  box-shadow: inset 0 3px 8px rgba(0, 0, 0, 1), 0 1px 0 rgba(255, 255, 255, 0.04) !important;
+}
+
+body.theme-amoled-skeuo ::selection {
+  background: rgba(216, 220, 226, 0.2);
+  color: #d0d4da;
+}
+
+body.theme-amoled-skeuo ::-webkit-scrollbar {
+  width: 10px;
+  background: #0a0a0b;
+}
+
+body.theme-amoled-skeuo ::-webkit-scrollbar-track {
+  background: #0a0a0b;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 1);
+}
+
+body.theme-amoled-skeuo ::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #2e2e30 0%, #1e1e20 100%);
+  border: 1px solid #000;
+  border-top-color: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+body.theme-amoled-skeuo ::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #383838 0%, #282828 100%);
+}
+
+body.theme-amoled-skeuo #admin-status.ok {
+  color: #608060;
+}
+
+body.theme-amoled-skeuo #admin-status.err {
+  color: #d46060;
+}
+
+body.theme-amoled-skeuo #join-error {
+  color: #d46060;
+}
+
+body.theme-amoled-skeuo .msg-chat-error {
+  color: #d46060;
+}
+
+body.theme-amoled-skeuo #char-counter.warn {
+  color: #b8a060;
+}
+
+body.theme-amoled-skeuo #char-counter.limit {
+  color: #d46060;
+}
+
+body.theme-amoled-skeuo #kicked-screen h2 {
+  color: #d46060;
+}
+
+body.theme-amoled-skeuo .btn-kick {
+  background: rgba(212, 96, 96, 0.1);
+  color: #d46060;
+  border-color: rgba(212, 96, 96, 0.25);
+}
+
+body.theme-amoled-skeuo .btn-kick:hover {
+  background: rgba(212, 96, 96, 0.18);
+}
+
+body.theme-amoled-skeuo .btn-mute {
+  background: rgba(184, 160, 96, 0.1);
+  color: #b8a060;
+  border-color: rgba(184, 160, 96, 0.25);
+}
+
+body.theme-amoled-skeuo .btn-mute:hover {
+  background: rgba(184, 160, 96, 0.18);
+}
+
+body.theme-amoled-skeuo .btn-unmute {
+  background: rgba(96, 128, 96, 0.1);
+  color: #608060;
+  border-color: rgba(96, 128, 96, 0.25);
+}
+
+body.theme-amoled-skeuo .btn-unmute:hover {
+  background: rgba(96, 128, 96, 0.18);
+}
+
+body.theme-amoled-skeuo .muted-badge,
+body.theme-amoled-skeuo .admin-self-label,
+body.theme-amoled-skeuo #admin-badge,
+body.theme-amoled-skeuo .user-admin-crown {
+  color: #d8dce2;
+  border-color: rgba(216, 220, 226, 0.2);
+}
+
+body.theme-amoled-skeuo #reconnect-banner {
+  background: #060606;
+  border-bottom: 1px solid #000;
+  color: #d0d4da;
+}
+
+body.theme-amoled-skeuo .dm-win.dm-active {
+  border-color: rgba(216, 220, 226, 0.2);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.9);
+}
+
+body.theme-amoled-skeuo .dm-unread,
+body.theme-amoled-skeuo .dm-bubble-badge,
+body.theme-amoled-skeuo #dm-tray-btn.has-unread {
+  background: #d8dce2;
+  color: #0a0a0b;
+}
+
+body.theme-amoled-skeuo .dm-wb.dm-close-btn:hover,
+body.theme-amoled-skeuo .dm-paste-x:hover {
+  color: #d46060;
+}
+
+body.theme-amoled-skeuo .msg-audio {
+  background: #141416;
+  border-color: #0a0a0b;
+}
+
+body.theme-amoled-skeuo .audio-play-btn {
+  background: #1e1e20;
+  color: #d0d4da;
+  border-color: #0a0a0b;
+}
+
+body.theme-amoled-skeuo .audio-dur {
+  color: #606468;
+}
+
+body.theme-amoled-skeuo .user-avatar,
+body.theme-amoled-skeuo .msg-avatar {
+  border-color: #0a0a0b;
+  background: #141416;
+}
+
+body.theme-amoled-skeuo #lt-toast {
+  background: #252527;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  color: #d0d4da;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.8);
+}
+
+body.theme-amoled-skeuo #lightbox {
+  background: rgba(4, 4, 5, 0.95);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* THEME D: ANODIZED BRONZE (Milled EDC / Mechanical Keyboard) */
+body.theme-anodized-bronze {
+  --theme-label: 'bronze';
+  --bg-body: #120f0e;
+  --bg-panel: linear-gradient(145deg, #3d312b 0%, #261e1a 100%);
+  --bg-sidebar: linear-gradient(180deg, #332823 0%, #261e1a 100%);
+  --bg-header: linear-gradient(180deg, #473932 0%, #362c26 100%);
+  --bg-bottom: #2b221e;
+  --bg-input: #120e0c;
+  --bg-btn: linear-gradient(180deg, #59473e 0%, #3d312b 100%);
+  --bg-btn-hover: linear-gradient(180deg, #6b554b 0%, #4a3b34 100%);
+  --bg-msg: #29201c;
+  --bg-msg-own: #40332c;
+  --text-main: #e8dacb;
+  --text-dim: #9c897a;
+  --text-btn: #ffffff;
+  --border-main: 1px solid #140f0d;
+  --border-light: 1px solid rgba(255, 255, 255, 0.1);
+  --shadow-panel: 0 30px 60px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.15), inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+  --shadow-input: inset 0 4px 10px rgba(0, 0, 0, 0.8), inset 0 1px 3px rgba(0, 0, 0, 0.9), 0 1px 0 rgba(255, 255, 255, 0.1);
+  --shadow-btn: 0 4px 8px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.2), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+  --shadow-msg: 0 2px 4px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  --shadow-focus: 0 0 0 2px rgba(255, 153, 51, 0.4);
+  --radius-panel: 8px;
+  --radius-btn: 4px;
+  --radius-input: 4px;
+  --radius-msg: 6px;
+  --font-main: 'SF Pro Display', -apple-system, sans-serif;
+  --led-glow: #ff9933;
+  --rain-r: 232;
+  --rain-g: 218;
+  --rain-b: 203;
+}
+
+body.theme-anodized-bronze #chat-screen-inner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background: linear-gradient(105deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.02) 45%, rgba(255, 255, 255, 0.05) 50%, rgba(255, 255, 255, 0) 55%);
+}
+
+body.theme-anodized-bronze button:active,
+body.theme-anodized-bronze .tb-theme-btn:active {
+  transform: translateY(2px) !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.08), inset 0 0 0 1px rgba(255, 255, 255, 0.02) !important;
+}
+
+/* No-radius mode — overrides all corner radius vars */
+
+body.no-radius,
+body.no-radius *,
+body.no-radius *::before,
+body.no-radius *::after {
+  --radius-panel: 0px !important;
+  --radius-btn: 0px !important;
+  --radius-input: 0px !important;
+  --radius-msg: 0px !important;
+  border-radius: 0px !important;
+}
+
+
+
+
+@keyframes aurora-drift {
+  0% {
+    opacity: 0.7;
+    filter: hue-rotate(0deg) blur(40px);
+  }
+
+  33% {
+    opacity: 0.9;
+    filter: hue-rotate(15deg) blur(35px);
+  }
+
+  66% {
+    opacity: 0.8;
+    filter: hue-rotate(-10deg) blur(45px);
+  }
+
+  100% {
+    opacity: 1.0;
+    filter: hue-rotate(20deg) blur(38px);
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   CHROME DARK
+   ══════════════════════════════════════════════════════════════════════════ */
+
+
+/* THEME: CHROME DARK */
+/* Matches actual Chrome default dark theme — near-black frame, barely-lifted surfaces */
+body.theme-chrome-dark {
+  --theme-label: 'chrome';
+
+  /* ── BACKGROUNDS ── */
+  /* Chrome frame: the outer shell, nearly black                */
+  --bg-body: #1f1f1f;
+  /* Active tab / main panel: barely lifted off the frame       */
+  --bg-panel: #2d2d2d;
+  /* Sidebar stays at frame level                               */
+  --bg-sidebar: #1f1f1f;
+  /* Topbar = toolbar strip, matches active tab surface         */
+  --bg-header: #2d2d2d;
+  --bg-bottom: #2d2d2d;
+  /* Omnibox / input: slightly lighter inset                    */
+  --bg-input: #3b3b3b;
+  /* Buttons: same lift as active tab                           */
+  --bg-btn: #3b3b3b;
+  --bg-btn-hover: #484848;
+  /* Messages: subtle card lift                                 */
+  --bg-msg: #363636;
+  --bg-msg-own: #404040;
+
+  /* ── TEXT ── */
+  --text-main: #e3e3e3;
+  /* Chrome's primary label text        */
+  --text-dim: #909090;
+  /* Secondary / metadata text          */
+  --text-btn: #e3e3e3;
+
+  /* ── BORDERS ── */
+  /* Chrome uses very subtle single-pixel separators            */
+  --border-main: 1px solid #3b3b3b;
+  --border-light: 1px solid rgba(255, 255, 255, 0.06);
+  --border2: #3b3b3b;
+
+  /* ── SHADOWS ── */
+  /* Chrome is completely flat — no elevation, no glows         */
+  --shadow-panel: 0 2px 8px rgba(0, 0, 0, 0.5);
+  --shadow-btn: none;
+  --shadow-input: none;
+  --shadow-msg: none;
+  /* Focus ring: Chrome's blue — #1a73e8 in dark mode          */
+  --shadow-focus: 0 0 0 2px #1a73e8;
+
+  /* ── SHAPE ── */
+  /* Chrome uses small but visible corner rounding              */
+  --radius-panel: 8px;
+  --radius-btn: 4px;
+  /* Omnibox is a full pill                                     */
+  --radius-input: 20px;
+  --radius-msg: 8px;
+
+  /* ── TYPOGRAPHY & ACCENT ── */
+  --font-main: 'Roboto', 'Segoe UI', system-ui, sans-serif;
+  --led-glow: #1a73e8;
+  /* Google Blue                        */
+
+  /* ── RAIN ── */
+  --rain-r: 100;
+  --rain-g: 140;
+  --rain-b: 220;
+
+  /* ── LISTEN TOGETHER ── */
+  --color-bubble-bg: var(--bg-panel);
+  --color-text: var(--text-main);
+
+  /* ── TAXONOMY PILLS ── */
+  --fallacy-bg: rgba(242, 139, 130, 0.12);
+  --fallacy-txt: #f28b82;
+  --fallacy-bdr: rgba(242, 139, 130, 0.25);
+
+  --bias-bg: rgba(26, 115, 232, 0.12);
+  --bias-txt: #6aabff;
+  --bias-bdr: rgba(26, 115, 232, 0.3);
+
+  --assumption-bg: rgba(251, 188, 4, 0.1);
+  --assumption-txt: #fcc934;
+  --assumption-bdr: rgba(251, 188, 4, 0.25);
+}
+
+body.theme-chrome-dark #topbar-title {
+  color: #e3e3e3;
+  text-shadow: none;
+}
+
+body.theme-chrome-dark #topbar-count {
+  color: #b0b0b0;
+  text-shadow: none;
+}
+
+body.theme-chrome-dark #sidebar-header h1,
+body.theme-chrome-dark #sidebar-header * {
+  color: #e3e3e3;
+  text-shadow: none;
+}
+
+body.theme-chrome-dark #tax-header {
+  background: #2d2d2d;
+  border-bottom: var(--border-main);
+  box-shadow: none;
+}
+
+body.theme-chrome-dark #tax-title-text,
+body.theme-chrome-dark #tax-count,
+body.theme-chrome-dark #tax-close-btn {
+  color: #e3e3e3;
+  text-shadow: none;
+}
+
+body.theme-chrome-dark #messages {
+  background: #1f1f1f;
+}
+
+body.theme-chrome-dark input:focus,
+body.theme-chrome-dark textarea:focus {
+  box-shadow: 0 0 0 2px #1a73e8 !important;
+}
+
+body.theme-chrome-dark .mp-tl-row.mp-tl-active .mp-tl-num,
+body.theme-chrome-dark .mp-tl-row.mp-tl-active .mp-tl-name,
+body.theme-chrome-dark .mp-ap-item.mp-ap-active {
+  text-shadow: none !important;
+}
+
+body.theme-chrome-dark ::selection {
+  background: rgba(26, 115, 232, 0.35);
+  color: #e3e3e3;
+}
+
+/* Active / selected toggle button states */
+/* Without this, --bg-btn and --bg-input are identical (#3b3b3b) so active = inactive visually */
+body.theme-chrome-dark .tb-active,
+body.theme-chrome-dark .tax-btn-active {
+  background: rgba(26, 115, 232, 0.18) !important;
+  color: #6aabff !important;
+  border-color: rgba(26, 115, 232, 0.4) !important;
+  box-shadow: none !important;
+}
+
+body.theme-chrome-dark #rain-btn.rain-on {
+  background: rgba(26, 115, 232, 0.18) !important;
+  color: #6aabff !important;
+  border-color: rgba(26, 115, 232, 0.4) !important;
+  box-shadow: none !important;
+}
+
+body.theme-chrome-dark #size-toggle .sz-btn.sz-active {
+  background: rgba(26, 115, 232, 0.18) !important;
+  color: #6aabff !important;
+  box-shadow: none !important;
+}
+
+body.theme-chrome-dark .tb-dd-item.tb-cur {
+  color: #6aabff !important;
+  background: rgba(26, 115, 232, 0.12) !important;
+}
+
+/* Scrollbar — Chrome's own dark-mode scrollbar style */
+body.theme-chrome-dark ::-webkit-scrollbar {
+  width: 8px;
+  background: transparent;
+}
+
+body.theme-chrome-dark ::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+body.theme-chrome-dark ::-webkit-scrollbar-thumb {
+  background: #4a4a4a;
+  border-radius: 4px;
+}
+
+body.theme-chrome-dark ::-webkit-scrollbar-thumb:hover {
+  background: #626262;
+}
+
+body.theme-chrome-dark #admin-status.ok {
+  color: #81c995;
+}
+
+body.theme-chrome-dark #admin-status.err {
+  color: #f28b82;
+}
+
+body.theme-chrome-dark #join-error {
+  color: #f28b82;
+}
+
+body.theme-chrome-dark .msg-chat-error {
+  color: #f28b82;
+}
+
+body.theme-chrome-dark #char-counter.warn {
+  color: #fcc934;
+}
+
+body.theme-chrome-dark #char-counter.limit {
+  color: #f28b82;
+}
+
+body.theme-chrome-dark #kicked-screen h2 {
+  color: #f28b82;
+}
+
+body.theme-chrome-dark .btn-kick {
+  background: rgba(242, 139, 130, 0.1);
+  color: #f28b82;
+  border-color: rgba(242, 139, 130, 0.3);
+}
+
+body.theme-chrome-dark .btn-kick:hover {
+  background: rgba(242, 139, 130, 0.2);
+}
+
+body.theme-chrome-dark .btn-mute {
+  background: rgba(252, 201, 52, 0.1);
+  color: #fcc934;
+  border-color: rgba(252, 201, 52, 0.3);
+}
+
+body.theme-chrome-dark .btn-mute:hover {
+  background: rgba(252, 201, 52, 0.2);
+}
+
+body.theme-chrome-dark .btn-unmute {
+  background: rgba(129, 201, 149, 0.1);
+  color: #81c995;
+  border-color: rgba(129, 201, 149, 0.3);
+}
+
+body.theme-chrome-dark .btn-unmute:hover {
+  background: rgba(129, 201, 149, 0.2);
+}
+
+body.theme-chrome-dark #lightbox {
+  background: rgba(15, 15, 15, 0.92);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   SLATE
+   Cold brushed-steel dark. Precision instruments, server rooms, submarine
+   control panels. Surfaces are blue-shifted rather than neutral grey —
+   they feel like steel under controlled fluorescent light.
+   Accent: electric blue #3d8bff. Everything flat, no warm tones.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   IRON
+   Dark alloy. Same physically-consistent light simulation as Alloy —
+   top edges catch light, bottom edges fall into shadow, inputs are recessed.
+   Material: dark anodized aluminium. Anchor: #2a2d31 gunmetal.
+   Accent: cool chamfer glint #b4c0d2 — no colour, just light on metal.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+
+body.theme-iron {
+  --theme-label: 'iron';
+
+  --bg-body: #2a2d31;
+  --bg-panel: linear-gradient(135deg, #3a3e44 0%, #2e3238 100%);
+  --bg-sidebar: linear-gradient(180deg, #32363c 0%, #2a2d31 100%);
+  --bg-header: linear-gradient(180deg, #42464d 0%, #383c42 100%);
+  --bg-bottom: #32363c;
+  --bg-input: #1e2125;
+  --bg-btn: linear-gradient(180deg, #42464d 0%, #32363c 100%);
+  --bg-btn-hover: linear-gradient(180deg, #4c5058 0%, #3c4048 100%);
+  --bg-msg: #34383e;
+  --bg-msg-own: #3c4048;
+
+  --text-main: #c8cdd5;
+  --text-dim: #72787f;
+  --text-btn: #a0a8b2;
+
+  --border-main: 1px solid #1e2125;
+  --border-light: 1px solid rgba(255, 255, 255, 0.1);
+  --border2: #1e2125;
+
+  --shadow-panel: 0 20px 40px rgba(0, 0, 0, 0.5),
+    inset 0 2px 2px rgba(255, 255, 255, 0.1),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.3);
+  --shadow-input: inset 0 2px 6px rgba(0, 0, 0, 0.6),
+    inset 0 1px 3px rgba(0, 0, 0, 0.5),
+    0 1px 0 rgba(255, 255, 255, 0.07);
+  --shadow-btn: 0 2px 4px rgba(0, 0, 0, 0.35),
+    inset 0 2px 2px rgba(255, 255, 255, 0.1),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.25);
+  --shadow-msg: 0 2px 6px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.07);
+  --shadow-focus: 0 0 0 3px rgba(180, 192, 210, 0.35);
+
+  --radius-panel: 8px;
+  --radius-btn: 4px;
+  --radius-input: 4px;
+  --radius-msg: 6px;
+
+  --font-main: 'SF Pro Display', 'Helvetica Neue', sans-serif;
+  --led-glow: #b4c0d2;
+  --rain-r: 80;
+  --rain-g: 90;
+  --rain-b: 105;
+
+  --color-bubble-bg: var(--bg-panel);
+  --color-text: var(--text-main);
+
+  --fallacy-bg: rgba(200, 80, 80, 0.1);
+  --fallacy-txt: #c87070;
+  --fallacy-bdr: rgba(200, 80, 80, 0.22);
+  --bias-bg: rgba(160, 175, 200, 0.08);
+  --bias-txt: #8898b0;
+  --bias-bdr: rgba(160, 175, 200, 0.18);
+  --assumption-bg: rgba(190, 170, 100, 0.08);
+  --assumption-txt: #a89060;
+  --assumption-bdr: rgba(190, 170, 100, 0.2);
+}
+
+body.theme-iron #topbar-title {
+  color: #c8cdd5;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.07);
+}
+
+body.theme-iron #topbar-count {
+  color: #72787f;
+}
+
+body.theme-iron #sidebar-header h1,
+body.theme-iron #sidebar-header * {
+  color: #c8cdd5;
+}
+
+body.theme-iron #tax-header {
+  background: #2a2d31;
+  border-bottom: var(--border-main);
+  box-shadow: none;
+}
+
+body.theme-iron #tax-title-text,
+body.theme-iron #tax-count,
+body.theme-iron #tax-close-btn {
+  color: #c8cdd5;
+  text-shadow: none;
+}
+
+body.theme-iron #messages {
+  background: #2a2d31;
+}
+
+body.theme-iron input:focus,
+body.theme-iron textarea:focus {
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.6), 0 0 0 3px rgba(180, 192, 210, 0.3) !important;
+}
+
+body.theme-iron .mp-tl-row.mp-tl-active .mp-tl-num,
+body.theme-iron .mp-tl-row.mp-tl-active .mp-tl-name,
+body.theme-iron .mp-ap-item.mp-ap-active {
+  text-shadow: none;
+  color: #c8cdd5;
+}
+
+body.theme-iron .mp-bar {
+  background: #1e2125;
+}
+
+body.theme-iron .mp-vol {
+  accent-color: #b4c0d2;
+}
+
+body.theme-iron .tb-active,
+body.theme-iron .tax-btn-active {
+  background: #1e2125 !important;
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.5), 0 1px 0 rgba(255, 255, 255, 0.07) !important;
+  color: #c8cdd5 !important;
+  border-color: #181b1e !important;
+}
+
+body.theme-iron #rain-btn.rain-on {
+  background: #1e2125 !important;
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.5) !important;
+  color: #c8cdd5 !important;
+  border-color: #181b1e !important;
+}
+
+body.theme-iron #size-toggle .sz-btn.sz-active {
+  background: #1e2125 !important;
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.5) !important;
+  color: #c8cdd5 !important;
+}
+
+body.theme-iron .tb-dd-item.tb-cur {
+  color: #c8cdd5;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+body.theme-iron button:active {
+  transform: translateY(1px);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.06), inset 0 -1px 0 rgba(0, 0, 0, 0.2) !important;
+}
+
+body.theme-iron ::selection {
+  background: rgba(180, 192, 210, 0.25);
+  color: #c8cdd5;
+}
+
+body.theme-iron ::-webkit-scrollbar {
+  width: 14px;
+  background: #2a2d31;
+}
+
+body.theme-iron ::-webkit-scrollbar-track {
+  background: #2a2d31;
+  box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.3);
+}
+
+body.theme-iron ::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #42464d 0%, #32363c 100%);
+  border: 1px solid #1e2125;
+  border-top-color: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+body.theme-iron ::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #4c5058 0%, #3c4048 100%);
+}
+
+body.theme-iron #admin-status.ok {
+  color: #7aaa7a;
+}
+
+body.theme-iron #admin-status.err {
+  color: #c87070;
+}
+
+body.theme-iron #join-error {
+  color: #c87070;
+}
+
+body.theme-iron .msg-chat-error {
+  color: #c87070;
+}
+
+body.theme-iron #char-counter.warn {
+  color: #a89060;
+}
+
+body.theme-iron #char-counter.limit {
+  color: #c87070;
+}
+
+body.theme-iron #kicked-screen h2 {
+  color: #c87070;
+}
+
+body.theme-iron .btn-kick {
+  background: rgba(200, 112, 112, 0.1);
+  color: #c87070;
+  border-color: rgba(200, 112, 112, 0.25);
+}
+
+body.theme-iron .btn-kick:hover {
+  background: rgba(200, 112, 112, 0.18);
+}
+
+body.theme-iron .btn-mute {
+  background: rgba(168, 144, 96, 0.1);
+  color: #a89060;
+  border-color: rgba(168, 144, 96, 0.25);
+}
+
+body.theme-iron .btn-mute:hover {
+  background: rgba(168, 144, 96, 0.18);
+}
+
+body.theme-iron .btn-unmute {
+  background: rgba(122, 170, 122, 0.1);
+  color: #7aaa7a;
+  border-color: rgba(122, 170, 122, 0.25);
+}
+
+body.theme-iron .btn-unmute:hover {
+  background: rgba(122, 170, 122, 0.18);
+}
+
+body.theme-iron .muted-badge,
+body.theme-iron .admin-self-label,
+body.theme-iron #admin-badge,
+body.theme-iron .user-admin-crown {
+  color: #c8cdd5;
+  border-color: rgba(200, 205, 213, 0.2);
+}
+
+body.theme-iron #reconnect-banner {
+  background: #1e2125;
+  border-bottom: 1px solid #181b1e;
+  color: #c8cdd5;
+}
+
+body.theme-iron .dm-win.dm-active {
+  border-color: rgba(180, 192, 210, 0.3);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(180, 192, 210, 0.1);
+}
+
+body.theme-iron .dm-unread,
+body.theme-iron .dm-bubble-badge,
+body.theme-iron #dm-tray-btn.has-unread {
+  background: #c8cdd5;
+  color: #2a2d31;
+}
+
+body.theme-iron .dm-wb.dm-close-btn:hover,
+body.theme-iron .dm-paste-x:hover {
+  color: #c87070;
+}
+
+body.theme-iron .msg-audio {
+  background: #34383e;
+  border-color: #1e2125;
+}
+
+body.theme-iron .audio-play-btn {
+  background: #3c4048;
+  color: #c8cdd5;
+  border-color: #1e2125;
+}
+
+body.theme-iron .audio-dur {
+  color: #72787f;
+}
+
+body.theme-iron .user-avatar,
+body.theme-iron .msg-avatar {
+  border-color: #1e2125;
+  background: #34383e;
+}
+
+body.theme-iron #lt-toast {
+  background: #3a3e44;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #c8cdd5;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+body.theme-iron #lightbox {
+  background: rgba(20, 22, 25, 0.94);
+}
+
+
+/* THEME 9: Machined Alloy (CNC Milled Aluminum) */
+body.theme-machined-alloy {
+  --theme-label: 'alloy';
+  --bg-body: #b8bec5;
+  --bg-panel: linear-gradient(135deg, #e2e6eb 0%, #c4cad3 100%);
+  --bg-sidebar: linear-gradient(180deg, #d1d6de 0%, #b8bec5 100%);
+  --bg-header: linear-gradient(180deg, #ffffff 0%, #e2e6eb 100%);
+  --bg-bottom: #d1d6de;
+  --bg-input: #eef1f5;
+  --bg-btn: linear-gradient(180deg, #ffffff 0%, #d1d6de 100%);
+  --bg-btn-hover: linear-gradient(180deg, #ffffff 0%, #e2e6eb 100%);
+  --bg-msg: #ffffff;
+  --bg-msg-own: #f0f3f7;
+  --text-main: #2c323a;
+  --text-dim: #6b7684;
+  --text-btn: #1a1f26;
+  --border-main: 1px solid #9aa3af;
+  --border-light: 1px solid #ffffff;
+  --shadow-panel: 0 20px 40px rgba(20, 25, 30, 0.15), inset 0 2px 2px #ffffff, inset 0 -2px 4px rgba(0, 0, 0, 0.08);
+  --shadow-input: inset 0 2px 5px rgba(0, 0, 0, 0.1), 0 1px 0 #ffffff;
+  --shadow-btn: 0 2px 4px rgba(0, 0, 0, 0.1), inset 0 2px 2px #ffffff;
+  --shadow-msg: 0 2px 6px rgba(0, 0, 0, 0.05), inset 0 1px 0 #ffffff;
+  --shadow-focus: 0 0 0 3px rgba(0, 122, 255, 0.3);
+  --radius-panel: 8px;
+  --radius-btn: 4px;
+  --radius-input: 4px;
+  --radius-msg: 6px;
+  --font-main: 'SF Pro Display', 'Helvetica Neue', sans-serif;
+  --led-glow: #007aff;
+  --rain-r: 80;
+  --rain-g: 100;
+  --rain-b: 130;
+}
+
+
+
+body.theme-vista-grey {
+  --theme-label: 'vista';
+
+  /* ── BACKGROUNDS ── */
+
+  /* Body: Frutiger Aero sky — radial light source at top + soft blue */
+  --bg-body:
+    radial-gradient(ellipse at 30% -10%, rgba(255, 255, 255, 0.9) 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 20%, rgba(150, 210, 255, 0.4) 0%, transparent 50%),
+    radial-gradient(ellipse at 10% 80%, rgba(100, 200, 180, 0.2) 0%, transparent 45%),
+    linear-gradient(180deg, #a8d8f0 0%, #7ec8e8 30%, #4aa8d0 70%, #2a88b8 100%);
+
+  /* Panels: frosted glass — the signature Vista Aeroglass look */
+  --bg-panel: rgba(255, 255, 255, 0.62);
+  --bg-sidebar: rgba(255, 255, 255, 0.5);
+
+  /* Header: slightly more opaque glass with blue tint — Vista title bar */
+  --bg-header: linear-gradient(180deg,
+      rgba(255, 255, 255, 0.85) 0%,
+      rgba(210, 235, 255, 0.8) 49%,
+      rgba(180, 220, 250, 0.75) 51%,
+      rgba(160, 210, 245, 0.7) 100%);
+
+  /* Bottom: clean frosted white */
+  --bg-bottom: rgba(255, 255, 255, 0.7);
+
+  /* Input: clean white with slight cool tint */
+  --bg-input: rgba(255, 255, 255, 0.92);
+
+  /* Buttons: Vista-style glassy pill gradient */
+  --bg-btn:
+    linear-gradient(180deg,
+      rgba(255, 255, 255, 0.95) 0%,
+      rgba(220, 238, 255, 0.9) 49%,
+      rgba(190, 222, 248, 0.85) 51%,
+      rgba(160, 208, 244, 0.8) 100%);
+
+  --bg-btn-hover:
+    linear-gradient(180deg,
+      rgba(255, 255, 255, 1) 0%,
+      rgba(230, 244, 255, 0.95) 49%,
+      rgba(200, 232, 255, 0.9) 51%,
+      rgba(170, 218, 252, 0.85) 100%);
+
+  /* Messages: clean frosted glass */
+  --bg-msg: rgba(255, 255, 255, 0.75);
+  --bg-msg-own: rgba(210, 235, 255, 0.85);
+
+  /* ── TEXT ── */
+  --text-main: #1a2840;
+  /* Vista window text — dark navy on glass */
+  --text-dim: #6080a0;
+  /* muted blue-gray */
+  --text-btn: #1a3060;
+  /* slightly darker for button readability */
+
+  /* ── BORDERS ── */
+  /* Vista Aeroglass window border: subtle blue-white glow */
+  --border-main: 1px solid rgba(100, 160, 220, 0.35);
+  --border-light: 1px solid rgba(255, 255, 255, 0.7);
+  --border2: rgba(100, 160, 220, 0.2);
+
+  /* ── SHADOWS ── */
+  /* Vista window shadow: soft blue-tinted drop shadow */
+  --shadow-panel:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.5),
+    0 8px 32px rgba(0, 60, 120, 0.2),
+    0 2px 8px rgba(0, 40, 100, 0.12);
+
+  --shadow-btn:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    inset 0 -1px 0 rgba(0, 60, 120, 0.1),
+    0 1px 3px rgba(0, 40, 100, 0.2);
+
+  --shadow-input:
+    inset 0 2px 5px rgba(0, 40, 100, 0.12),
+    inset 0 1px 2px rgba(0, 20, 60, 0.08),
+    0 1px 0 rgba(255, 255, 255, 0.9);
+
+  --shadow-msg:
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    0 2px 8px rgba(0, 40, 100, 0.1);
+
+  /* Focus: Vista blue ring */
+  --shadow-focus: 0 0 0 3px rgba(0, 120, 212, 0.35);
+
+  /* ── SHAPE ── */
+  --radius-panel: 12px;
+  --radius-btn: 20px;
+  /* Vista buttons are very rounded/pill */
+  --radius-input: 4px;
+  --radius-msg: 12px;
+
+  /* ── TYPOGRAPHY ── */
+  --font-main: 'Nunito', 'Segoe UI', 'Trebuchet MS', system-ui, sans-serif;
+
+  /* ── LED: Vista blue ── */
+  --led-glow: #0078d4;
+
+  /* ── RAIN: sky blue ── */
+  --rain-r: 100;
+  --rain-g: 180;
+  --rain-b: 240;
+
+  /* ── LISTEN-TOGETHER ── */
+  --color-bubble-bg: rgba(255, 255, 255, 0.9);
+  --color-text: #1a2840;
+
+  /* ── TAXONOMY PILLS ── */
+  --fallacy-bg: rgba(180, 80, 80, 0.1);
+  --fallacy-txt: #c04040;
+  --fallacy-bdr: rgba(180, 80, 80, 0.25);
+  --bias-bg: rgba(0, 100, 200, 0.1);
+  --bias-txt: #0064c8;
+  --bias-bdr: rgba(0, 100, 200, 0.25);
+  --assumption-bg: rgba(40, 140, 100, 0.1);
+  --assumption-txt: #288060;
+  --assumption-bdr: rgba(40, 140, 100, 0.25);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+ PART B
+ ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Background rendering layer ── */
+body.theme-vista-grey::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 30% -10%, rgba(255, 255, 255, 0.9) 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 20%, rgba(150, 210, 255, 0.4) 0%, transparent 50%),
+    radial-gradient(ellipse at 10% 80%, rgba(100, 200, 180, 0.2) 0%, transparent 45%),
+    linear-gradient(180deg, #a8d8f0 0%, #7ec8e8 30%, #4aa8d0 70%, #2a88b8 100%);
+}
+
+/* ── Aeroglass blur on panels ── */
+body.theme-vista-grey #chat-screen-inner,
+body.theme-vista-grey #sidebar,
+body.theme-vista-grey #taxonomy-panel,
+body.theme-vista-grey .dm-win {
+  backdrop-filter: blur(32px) saturate(140%);
+  -webkit-backdrop-filter: blur(32px) saturate(140%);
+}
+
+/* ── Glass border glow — the Aero window chrome ── */
+body.theme-vista-grey #chat-screen-inner,
+body.theme-vista-grey #sidebar {
+  border: 1px solid rgba(120, 180, 240, 0.45) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.85),
+    0 8px 32px rgba(0, 60, 120, 0.2),
+    0 0 0 1px rgba(255, 255, 255, 0.4) !important;
+}
+
+/* ── Glossary title bar ── */
+body.theme-vista-grey #tax-header {
+  background: linear-gradient(180deg,
+      rgba(255, 255, 255, 0.9) 0%,
+      rgba(200, 228, 255, 0.85) 100%);
+  border-bottom: 1px solid rgba(100, 160, 220, 0.3);
+  box-shadow: none;
+  backdrop-filter: blur(12px);
+}
+
+body.theme-vista-grey #tax-title-text {
+  color: #1a2840;
+  font-family: 'Nunito', 'Segoe UI', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+body.theme-vista-grey #tax-count {
+  color: #6080a0;
+  font-size: 11px;
+}
+
+body.theme-vista-grey #tax-close-btn {
+  color: #6080a0;
+}
+
+body.theme-vista-grey #tax-close-btn:hover {
+  color: #1a2840;
+}
+
+/* ── Message area: glass panel ── */
+body.theme-vista-grey #messages {
+  background: rgba(255, 255, 255, 0.25) !important;
+  backdrop-filter: blur(4px);
+}
+
+/* ── Messages: clean glass cards ── */
+body.theme-vista-grey .msg-text {
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid rgba(100, 160, 220, 0.25);
+  color: #1a2840;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 2px 6px rgba(0, 40, 100, 0.08);
+}
+
+body.theme-vista-grey .msg.own .msg-text {
+  background: rgba(210, 235, 255, 0.88);
+  border: 1px solid rgba(0, 120, 212, 0.2);
+  color: #102040;
+}
+
+/* ── Music player progress bar ── */
+body.theme-vista-grey .mp-bar {
+  background: rgba(0, 60, 120, 0.1) !important;
+  box-shadow: inset 0 1px 3px rgba(0, 40, 100, 0.15) !important;
+}
+
+body.theme-vista-grey .mp-vol {
+  background: rgba(0, 60, 120, 0.1) !important;
+}
+
+/* ── Focus ring ── */
+body.theme-vista-grey input:focus,
+body.theme-vista-grey textarea:focus {
+  box-shadow:
+    inset 0 2px 5px rgba(0, 40, 100, 0.12),
+    0 0 0 3px rgba(0, 120, 212, 0.3) !important;
+}
+
+/* ── Music glow: off (Vista uses clean flat color, no neon halos) ── */
+body.theme-vista-grey .mp-tl-row.mp-tl-active .mp-tl-num,
+body.theme-vista-grey .mp-tl-row.mp-tl-active .mp-tl-name,
+body.theme-vista-grey .mp-ap-item.mp-ap-active {
+  text-shadow: none !important;
+}
+
+/* ── Topbar title ── */
+body.theme-vista-grey #topbar-title {
+  color: #1a2840;
+  font-weight: 600;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7) !important;
+}
+
+body.theme-vista-grey #topbar-count {
+  color: #6080a0;
+}
+
+body.theme-vista-grey #sidebar-header h1,
+body.theme-vista-grey #sidebar-header * {
+  color: #1a2840;
+}
+
+/* ── Online dot: Vista blue ── */
+body.theme-vista-grey #online-badge::before {
+  background: #0078d4;
+  box-shadow: 0 0 4px rgba(0, 120, 212, 0.5);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* ── Button press ── */
+body.theme-vista-grey button:active {
+  transform: translateY(1px);
+  background: rgba(180, 215, 250, 0.9) !important;
+  box-shadow: inset 0 2px 4px rgba(0, 40, 100, 0.2) !important;
+}
+
+body.theme-vista-grey .tb-active,
+body.theme-vista-grey .tax-btn-active {
+  background: rgba(0, 120, 212, 0.12) !important;
+  box-shadow: inset 0 2px 4px rgba(0, 40, 100, 0.15) !important;
+  color: #0064c8 !important;
+  border-color: rgba(0, 120, 212, 0.3) !important;
+}
+
+/* ── Glossary scrollbar ── */
+body.theme-vista-grey #tax-list::-webkit-scrollbar-thumb {
+  background: rgba(0, 80, 160, 0.2) !important;
+  border-radius: 4px !important;
+}
+
+/* ── Global scrollbars: glass style ── */
+body.theme-vista-grey ::-webkit-scrollbar {
+  width: 8px;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+body.theme-vista-grey ::-webkit-scrollbar-track {
+  background: rgba(200, 225, 250, 0.3);
+}
+
+body.theme-vista-grey ::-webkit-scrollbar-thumb {
+  background: rgba(0, 80, 160, 0.25);
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+body.theme-vista-grey ::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 100, 200, 0.35);
+}
+
+/* ── Semantic ── */
+body.theme-vista-grey .btn-kick {
+  background: #ffeaea;
+  color: #c00000;
+  border-color: #ffc0c0;
+}
+
+body.theme-vista-grey .btn-kick:hover {
+  background: #ffd0d0;
+}
+
+body.theme-vista-grey .btn-mute {
+  background: #fff8e0;
+  color: #b06000;
+  border-color: #ffe080;
+}
+
+body.theme-vista-grey .btn-mute:hover {
+  background: #fff0c0;
+}
+
+body.theme-vista-grey .btn-unmute {
+  background: #eafaf0;
+  color: #007040;
+  border-color: #a0e0c0;
+}
+
+body.theme-vista-grey .btn-unmute:hover {
+  background: #d0f0e0;
+}
+
+body.theme-vista-grey #admin-status.ok {
+  color: #007040;
+}
+
+body.theme-vista-grey #admin-status.err {
+  color: #c00000;
+}
+
+body.theme-vista-grey #join-error {
+  color: #c00000;
+}
+
+body.theme-vista-grey .msg-chat-error {
+  color: #c00000;
+}
+
+body.theme-vista-grey #char-counter.warn {
+  color: #b06000;
+}
+
+body.theme-vista-grey #char-counter.limit {
+  color: #c00000;
+}
+
+body.theme-vista-grey .muted-badge,
+body.theme-vista-grey .admin-self-label,
+body.theme-vista-grey #admin-badge,
+body.theme-vista-grey .user-admin-crown {
+  color: #0064c8;
+  border-color: rgba(0, 100, 200, 0.35);
+}
+
+body.theme-vista-grey #reconnect-banner {
+  background: #c00000;
+  color: #fff;
+}
+
+/* ── DM ── */
+body.theme-vista-grey .dm-win.dm-active {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.85),
+    0 16px 40px rgba(0, 60, 120, 0.25),
+    0 0 0 1px rgba(120, 180, 240, 0.4) !important;
+  backdrop-filter: blur(32px) saturate(140%);
+}
+
+body.theme-vista-grey .dm-tb-avatar {
+  color: #1a2840;
+  box-shadow: none;
+  border-color: rgba(100, 160, 220, 0.3);
+}
+
+body.theme-vista-grey .dm-unread,
+body.theme-vista-grey .dm-bubble-badge,
+body.theme-vista-grey #dm-tray-btn.has-unread {
+  background: #0078d4;
+  color: #fff;
+}
+
+body.theme-vista-grey .dm-wb.dm-close-btn:hover,
+body.theme-vista-grey .dm-paste-x:hover {
+  background: #ffd0d0;
+  color: #c00000;
+}
+
+/* ── Audio ── */
+body.theme-vista-grey .msg-audio {
+  background: rgba(0, 40, 100, 0.06);
+  border: 1px solid rgba(100, 160, 220, 0.25);
+}
+
+body.theme-vista-grey .audio-play-btn {
+  background: rgba(0, 120, 212, 0.1);
+  color: #0078d4;
+  border-color: rgba(0, 120, 212, 0.25);
+}
+
+body.theme-vista-grey .audio-dur {
+  color: #6080a0;
+}
+
+/* ── Avatars: slight glass look ── */
+body.theme-vista-grey .user-avatar,
+body.theme-vista-grey .msg-avatar {
+  border: 1px solid rgba(255, 255, 255, 0.6) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    0 2px 4px rgba(0, 40, 100, 0.15) !important;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* ── Listen-together toast ── */
+body.theme-vista-grey #lt-toast {
+  background: rgba(255, 255, 255, 0.92);
+  color: #1a2840;
+  border-color: rgba(100, 160, 220, 0.35);
+  box-shadow: 0 4px 16px rgba(0, 60, 120, 0.15);
+  backdrop-filter: blur(12px);
+}
+
+/* ── Selection ── */
+body.theme-vista-grey ::selection {
+  background: #0078d4;
+  color: #fff;
+}
+
+/* ── Rain on Vista: make it visible against light bg ── */
+body.theme-vista-grey #rain-canvas {
+  opacity: 0.5;
+}
+
+/* ── GLOBAL ENHANCEMENTS (Mejoras añadidas) ──────────────────────────── */
+button,
+input,
+.msg,
+.panel {
+  transition: background 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, transform 0.05s ease;
+}
+
+input:focus,
+textarea:focus {
+  outline: none;
+  box-shadow: var(--shadow-input), var(--shadow-focus) !important;
+}
+
+/* Custom Scrollbars inmersivos basados en el tema */
+::-webkit-scrollbar {
+  width: 14px;
+  background: var(--bg-body);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--bg-btn);
+  border: var(--border-main);
+  border-radius: var(--radius-btn);
+  box-shadow: var(--shadow-btn);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--bg-btn-hover);
+}
+
+
+/* THEME 5: Sakura Y2K */
+
+
+/* THEME 5: Sakura Y2K */
+body.theme-sakura-y2k {
+  --theme-label: 'sakura';
+  --bg-body: radial-gradient(circle at top right, #ffb3d9 0%, #ff80bf 30%, #e60073 100%);
+  --bg-panel: linear-gradient(135deg, #e0e5ec 0%, #c4cbd4 100%);
+  --bg-sidebar: linear-gradient(180deg, #d3d9e2 0%, #b8c1cc 100%);
+  --bg-header: linear-gradient(180deg, #ffffff 0%, #dbe0e7 49%, #c4cbd4 51%, #aeb6c1 100%);
+  --bg-bottom: linear-gradient(180deg, #e5e9f0 0%, #cfd5de 100%);
+  --bg-input: #f5f7fa;
+  --bg-btn: linear-gradient(180deg, #ff99cc 0%, #ff4da6 49%, #ff1a8c 51%, #e60073 100%);
+  --bg-btn-hover: linear-gradient(180deg, #ffb3d9 0%, #ff66b3 49%, #ff3399 51%, #ff0080 100%);
+  --bg-msg: #ffffff;
+  --bg-msg-own: linear-gradient(180deg, #ff99cc 0%, #ff4da6 49%, #ff1a8c 51%, #e60073 100%);
+
+  --text-main: #333333;
+  --text-dim: #555555;
+  /* Oscurecido un poco para mejor contraste */
+  --text-btn: #ffffff;
+
+  --border-main: 1px solid #9aa3b0;
+  --border-light: 1px solid rgba(255, 255, 255, 0.8);
+
+  --shadow-panel: inset 0 1px 0 #ffffff, 0 10px 30px rgba(100, 0, 50, 0.4);
+  --shadow-input: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 0 #ffffff;
+  --shadow-btn: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 2px 5px rgba(230, 0, 115, 0.4);
+  --shadow-msg: inset 0 1px 0 #ffffff, 0 2px 4px rgba(0, 0, 0, 0.08);
+  --shadow-focus: 0 0 0 3px rgba(255, 77, 166, 0.4);
+
+  --radius-panel: 20px;
+  --radius-btn: 16px;
+  --radius-input: 12px;
+  --radius-msg: 18px;
+
+  --font-main: 'Trebuchet MS', 'Arial Rounded MT Bold', sans-serif;
+  --led-glow: #00ffcc;
+  --rain-r: 200;
+  --rain-g: 0;
+  --rain-b: 100;
+}
+
+body.theme-sakura-y2k #topbar-title {
+  color: #e60073;
+  text-shadow: 0 1px 0 #ffffff;
+}
+
+body.theme-sakura-y2k #topbar-count {
+  color: #9aa3b0;
+  text-shadow: 0 1px 0 #ffffff;
+}
+
+body.theme-sakura-y2k #send-btn svg path {
+  stroke: #ffffff;
+}
+
+body.theme-sakura-y2k .msg.own .msg-text {
+  border: var(--border-main);
+  border-radius: var(--radius-btn);
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 2px 5px rgba(230, 0, 115, 0.4);
+}
+
+body.theme-sakura-y2k.layout-cozy .msg.own .msg-text,
+body.theme-sakura-y2k.layout-compact .msg.own .msg-text {
+  color: var(--text-main);
+  text-shadow: none;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+ THEME: GRAPHITE
+ The material itself. Pencil graphite, carbon rods, mechanical pencil lead.
+ Matte, warm-gray, slightly earthy — NOT blue-gray, NOT silver.
+ Real graphite has a brownish-warm undertone and a hexagonal crystal
+ structure. This theme is built around those two facts.
+
+ Resources:
+ · SVG inline hexagonal grid — graphite crystal lattice structure
+ · SVG feTurbulence grain — graphite powder smear texture
+ · transparenttextures.com/patterns/old-paper.png — warm matte ground
+ · transparenttextures.com/patterns/noise-lines.png — graphite stroke texture
+ · fonts.google.com/specimen/DM+Sans — clean neutral, editorial weight
+ · lospec.com/palette-list/graphite — graphite-specific palette reference
+ · Palette: real graphite HB pencil color range
+   #1a1816 (warm near-black) → #2e2c2a → #3e3c38 → #c4bfb8 (warm light)
+ · LED: #f5c842 — soft graphite pencil glint (warm specular highlight)
+ ══════════════════════════════════════════════════════════════════════════ */
+
+
+
+
+
+/* THEME 2: Windows 7 Light Blue */
+body.theme-w7-blue {
+  --theme-label: 'aero';
+  --bg-body: radial-gradient(circle at 50% 0%, #a1c4fd 0%, #c2e9fb 100%);
+  --bg-panel: rgba(255, 255, 255, 0.6);
+  --bg-sidebar: rgba(240, 248, 255, 0.7);
+  --bg-header: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(220, 235, 245, 0.8) 100%);
+  --bg-bottom: rgba(245, 250, 255, 0.8);
+  --bg-input: #ffffff;
+  --bg-btn: linear-gradient(180deg, #f2f8ff 0%, #cce0ff 100%);
+  --bg-btn-hover: linear-gradient(180deg, #ffffff 0%, #ddebff 100%);
+  --bg-msg: linear-gradient(180deg, #ffffff 0%, #f0f4f8 100%);
+  --bg-msg-own: linear-gradient(180deg, #dcf8c6 0%, #c5e3b0 100%);
+
+  --text-main: #222222;
+  --text-dim: #555555;
+  --text-btn: #111111;
+
+  --border-main: 1px solid rgba(0, 50, 100, 0.2);
+  --border-light: 1px solid rgba(255, 255, 255, 0.8);
+
+  --shadow-panel: inset 0 0 4px rgba(255, 255, 255, 1), 0 8px 24px rgba(0, 60, 120, 0.2);
+  --shadow-input: inset 0 2px 4px rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 1);
+  --shadow-btn: inset 0 1px 0 #fff, 0 1px 3px rgba(0, 0, 0, 0.2);
+  --shadow-msg: inset 0 1px 0 #fff, 0 2px 4px rgba(0, 0, 0, 0.1);
+  --shadow-focus: 0 0 0 3px rgba(0, 120, 215, 0.4);
+
+  --radius-panel: 14px;
+  --radius-btn: 24px;
+  --radius-input: 16px;
+  --radius-msg: 14px;
+  --rain-r: 0;
+  --rain-g: 40;
+  --rain-b: 200;
+}
+
+/* THEME 3: PURE BLACK HARDWARE (Studio Console & Cool Silver LEDs) */
+
+/* ══════════════════════════════════════════════════════════════════════════
+   SKEUOMORPH
+   Dark hardware noir. Heavy analogue equipment — audio consoles, rack gear,
+   CRT terminals. One noise layer on the body only. Shadow logic identical
+   to alloy/bronze: top-edge highlight, bottom-edge depth. Inputs recessed.
+   Accent: cool off-white #d8dce2 — the colour of a backlit LCD label.
+   ══════════════════════════════════════════════════════════════════════════ */
