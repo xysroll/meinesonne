@@ -1,0 +1,15 @@
+{
+  "name": "cathedral",
+  "version": "1.0.0",
+  "description": "Real-time WebSocket chat with E2E encryption, ambient rain, procedural audio, and a full CSS theme engine",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.1010.0",
+    "music-metadata": "^11.12.3",
+    "sharp": "^0.34.5",
+    "ws": "^8.18.0"
+  }
+}
